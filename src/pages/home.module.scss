@@ -1,0 +1,171 @@
+.homePage {
+	padding: 0 4rem;
+	height: calc(100vh - 6.5rem); //altura que sobra entre a header e o restante da pagina
+	overflow-y: scroll; //isso faz com que o scroll funcione somente dentro deste container
+	//uma novidade para alguns
+
+	h2 {
+		margin-top: 3rem;
+		margin-bottom: 1.5rem;
+	}
+}
+
+.lastedEpisodes {
+	ul {
+		list-style: none;
+		display: grid;
+		grid-template-columns: repeat(2, 1fr); //repete um ao lado (eu acho)
+		gap: 1.5rem; //espaçamento
+
+		li {
+			background: var(--white);
+			border: 1px solid var(--gray-100);
+			padding: 1.25rem;
+			border-radius: 1.5rem;
+			position: relative;
+			display: flex;
+			align-items: center;
+
+			img {
+				width: 6rem;
+				height: 6rem;
+				border-radius: 1rem;
+			}
+
+			.episodeDetails {
+				flex: 1;
+				margin-left: 1rem;
+
+				a {
+					display: block;
+					color: var(--gray-800);
+					font-family: Lexent, sans-serif;
+					font-weight: 600;
+					text-decoration: none;
+					line-height: 1.4rem;
+
+					&:hover {
+						text-decoration: underline;
+					}
+				}
+
+				p {
+					font-size: 0.875rem;
+					margin-top: 0.5rem;
+					max-width: 70%;
+					white-space: nowrap; //nunca quebrar de linha
+					overflow: hidden; //oque passar nao sera visivel para o usuario
+					text-overflow: ellipsis; //... qnd passar
+				}
+
+				span {
+					display: inline-block;
+					margin-top: 0.5rem;
+					font-size: 0.875rem;
+
+					&:last-child {
+						//pega o primeiro span
+						margin-right: 0.5rem;
+						padding-right: 0.5rem;
+						position: relative;
+
+						&::before {
+							//com 2 && adiciona elemento, ou seja, o ponto de separacao
+							content: "";
+							width: 4px;
+							height: 4px;
+							border-radius: 2px;
+							background-color: #ddd;
+							position: absolute;
+							left: 0;
+							top: 50%;
+							transform: translate(-50%, -50%);
+						}
+					}
+				} //fim span
+			} //fim episodes details
+
+			button {
+				position: absolute;
+				right: 2rem;
+				bottom: 2rem;
+				width: 2.5rem;
+				height: 2.5rem;
+				background: var(--white);
+				border: 1px solid var(--gray-100);
+				border-radius: 0.675rem;
+				font-size: 0; //resetar tamanho do botao
+
+				transition: filter 0.2; //transicao com delay do btn
+
+				img {
+					width: 1.5rem;
+					height: 1.5rem;
+				}
+				&:hover {
+					filter: brightness(0.9);
+				}
+			}
+		}
+	}
+}
+.allEpisodes {
+	padding-bottom: 2rem;
+
+	table {
+		width: 100%;
+
+		th,
+		td {
+			padding: 0.75rem 1rem;
+			border-bottom: 1px solid var(--gray-100);
+		}
+		th {
+			color: var(--gray-200);
+			text-transform: uppercase;
+			font: 500 0.75rem Lexend, sans-serif;
+			text-align: left;
+		}
+		td {
+			font-size: 0.875rem;
+
+			img {
+				width: 2.5rem; //img dentro do td
+				height: 2.5rem;
+				border-radius: 0.5rem;
+			}
+
+			a {
+				color: var(--gray-800);
+				font-family: Lexend, sans-serif;
+				font-weight: 600;
+				text-decoration: none;
+				line-height: 1.4rem;
+				font-size: 0.9rem;
+			}
+			&:hover {
+				text-decoration: underline;
+			}
+		}
+
+		button {
+
+			width: 2rem;
+			height: 2rem;
+			background: var(--white);
+			border: 1px solid var(--gray-100);
+			border-radius: 0.4rem;
+			font-size: 0; //resetar tamanho do botao
+
+			transition: filter 0.2; //transicao com delay do btn
+
+			img {
+				width: 1.3rem;
+				height: 1.3rem;
+			}
+			&:hover {
+				filter: brightness(0.9);
+			}
+		}
+	}
+}
