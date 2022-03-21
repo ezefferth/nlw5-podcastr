@@ -7,8 +7,10 @@ import { api } from '../../services/api';
 import { format, parseISO } from 'date-fns'; //formatacao de dadas entre outros
 import ptBR from 'date-fns/locale/pt-BR';
 import { convertDurationToTimeString } from "../../utils/convertDuration";
-/* import { useRouter } from "next/router" */
+import { useRouter } from "next/router";//funcao
 import styles from './episodes.module.scss';
+import Link from 'next/link';
+
 
 type Episode = {
 	id: string;
@@ -28,14 +30,31 @@ type EpisodeProps = {
 
 export default function Episode({ episode }: EpisodeProps) {
 
+	//----------------------------
+	/* se a router estiver em carregamento "dos dados digamos assim
+	aguardando o getStaticProps buscar os dados"
+	
+	se fallback: true, entao deve deixar isso abaixo,
+	se nao tiver isso vai dar erro pois nao há dados para que a pagina 
+	posa usar para rendericacao 																		*/
+	/* const router = useRouter();
+
+	if (router.isFallback) {
+		return <p>Carregando...</p>
+	} */
+	//----------------------------
+
+
 	return (
 
 		<div className={styles.episode}>
 			<div className={styles.thumbnailContainer}>
-				<button type="button">
-					<img src="/arrow-left.svg" alt="Voltar" />
+				<Link href='/'>
+					<button type="button">
+						<img src="/arrow-left.svg" alt="Voltar" />
+					</button>
+				</Link>
 
-				</button>
 				<Image
 					width={700}
 					height={160}
@@ -64,18 +83,64 @@ export default function Episode({ episode }: EpisodeProps) {
 				}} />
 
 		</div>
-
-
 	)
-
 }
 
 //GetStaticPaths para paginas estaticas que podem ser dinamicas
-//devido
 export const getStaticPaths: GetStaticPaths = async () => {
+
+	/* É indicado aki, fazer a busca no banco dos dados mais acessados,
+	ou oque vc mais vai precisar mostrar nas paginas do site como um todo
+	e depois passa-los pelo paths, como no exemplo abaixo:
+	
+	*/
+
+	//busca o dado
+	const { data } = await api.get('episodes', {
+		params: {//nesse caso buscou os 2 primeiros episodios para poder
+			_limit: 2,//estar gerando de forma estatica os 2 primeiros ep
+			_sort: 'published_at',
+			_order: 'desc'
+		}
+	});
+
+	//passa cada episodio para o paths
+	const paths = data.map(episodes => {
+		return {
+			params: {
+				slug: episodes.id
+			}
+		}
+	});
+
+	//return recebe o paths e o tipo do fallback
 	return {
-		paths: [],
+		paths,
 		fallback: 'blocking'
+		/*  
+
+		paths: [] o next na hora da build nao gera nenhuma pagina
+		de forma estática. o fallback que determina o comportamento 
+		quando uma pessoa acessa a uma pagina de um epodio que nao foi
+		gerado estaticamente
+		
+		se fallback: false => ira aparecer o error 404, nao encontrado
+		
+		fallback: true  => ele ira tentar buscar os dados do staticprops
+		do novo episodio, e salvar em disco para gerar uma pagina statica,
+		Faz com que a requisicao da busca dos dados seja feita na parte do 
+		Cliente, lado do browser. Quando for true, ele demoraria para carregar
+		os dados da StaticProps, e isso afetaria a renderizacao da pagina
+		estatica, entao deva-se colocar um useRouter from next/router e colocar 
+		uma condicao antes de tudo no componente.
+
+		fallback: true roda no client, e 'blocking' no node.js
+
+		fallback: 'blocking' => vai rodar a requisição na camada node.js
+		a pessoa so vai carregar a tela quando os dados estiverem sidos 
+		carregados, e como melhor forma de indexação é o mais indicado
+		
+		*/
 	}
 }
 
@@ -104,5 +169,6 @@ export const getStaticProps: GetStaticProps = async (ctx) => { //ctx = context
 			episode
 		},
 		revalidate: 60 * 60 * 8 //60s * 60 = 1hora
+		//revalidate eh o intervalo da busca dos props
 	}
 }

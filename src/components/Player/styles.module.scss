@@ -29,7 +29,27 @@
 		}
 	}
 }
+/* qnd tem alguma coisa no player */
+.currentPlayer {
+	text-align: center;
 
+	img {
+		border-radius: 1.5rem;
+	}
+
+	strong {
+		display: block;
+		margin-top: 2rem;
+		font: 600 1.25rem Lexend, sans-serif;
+		line-height: 1.75rem;
+	}
+	span {
+		display: block;
+		margin-top: 1rem;
+		opacity: 0.6; //opacidade da letra
+		line-height: 1.5rem; //espaço entre linha
+	}
+}
 .emptyPlayer {
 	width: 100%;
 	height: 20rem;
@@ -72,19 +92,35 @@
 	align-items: center;
 	justify-content: center;
 	margin-top: 2.5rem;
-	gap:1.5rem;
+	gap: 1.5rem;
 
-	button{
+	button {
 		background: transparent;
 		border: 0;
 		font-size: 0;
+		transition: filter 0.2s;
 
+		/* se botao estiver desabilitao entao */
 
-		&.playButton{//botao do play
+		&:disabled {
+			cursor: default;
+		}
+
+		/* se passar mouse por cima e ele nao estiver desabilitado... */
+		&:hover:not(:disabled) {
+			filter: brightness(0.75);
+		}
+ 
+		&.playButton {
+			//botao do play
 			width: 4rem;
 			height: 4rem;
 			border-radius: 1rem;
 			background: var(--purple-400);
+			transition: filter 0.2s;
+			&:hover:not(:disabled){
+				filter: brightness(0.95);
+			}
 		}
 	}
 }

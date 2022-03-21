@@ -7,6 +7,8 @@ import styles from './home.module.scss';
 import Image from 'next/image';/* exclusivo ate entao do next
 eh uma forma de manipular imagem com otimizacao */
 import Link from 'next/link'//mao na roda, para cada troca de página, com link não é precisso todo
+import { PlayerContext } from "../context/PlayerContext";
+import { useContext } from "react";
 //carregamento novamente
 
 
@@ -44,16 +46,23 @@ type HomeProps = {
 //logo lasted e all é do tipo HomeProps.. uma vantagem de utilizar typescript
 export default function Home({ lastedEpisodes, allEpisodes }: HomeProps) {
 
+  //recebe context do playerContext
+  const { play, playList } = useContext(PlayerContext);
+
+  /* copiar a informação como um todo,  aproveitando as anteriores, imutabilidade*/
+  const episodeList = [...lastedEpisodes, ...allEpisodes];
+
+
+
 
   return (
-
     <div className={styles.homePage}>
       {/* aki vem 2 secoes, ultimos episodeios e todos episodeos */}
       <section className={styles.lastedEpisodes}>
         <h2>Últimos lançamentos</h2>
 
         <ul>
-          {lastedEpisodes.map(episode => {
+          {lastedEpisodes.map((episode, index) => {
             return (
               <li key={episode.id}>{/* importante por a key para que o react entenda corretamente
               qual eh o elemento que ele esta renderizando, pois em alguma chamada ele for alterar
@@ -75,8 +84,8 @@ export default function Home({ lastedEpisodes, allEpisodes }: HomeProps) {
                   <span>{episode.publishedAt}</span>
                   <span>{episode.durationFormated}</span>
                 </div>
-
-                <button type='button'>
+                {/*  desta forma, ele pega o episode e o index com a referencia da lista completa da home*/}
+                <button type='button' onClick={() => playList(episodeList, index)}>
                   <img src='/play-green.svg' alt='Tocar Episódio' />
                 </button>
               </li>
@@ -101,7 +110,7 @@ export default function Home({ lastedEpisodes, allEpisodes }: HomeProps) {
           </thead>
           <tbody>
             {
-              allEpisodes.map(episode => {
+              allEpisodes.map((episode, index) => {
                 return (
                   <tr key={episode.id}>
                     <td style={{ width: 75 }}>
@@ -128,8 +137,9 @@ export default function Home({ lastedEpisodes, allEpisodes }: HomeProps) {
                     <td>
                       {episode.durationFormated}
                     </td>
-                    <td>
-                      <button>
+                    <td>{/* lastedEpisodes.length e devido q o primeiro index eh 0, logo para pegar outro item
+                    o index deve ser aql que ele clicar */}
+                      <button onClick={() => playList(episodeList, index + lastedEpisodes.length)}>
                         <img src='/play-green.svg' alt='Tocar eposódio' />
                       </button>
                     </td>

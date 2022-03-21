@@ -13,29 +13,75 @@
 		button {
 			width: 3rem;
 			height: 3rem;
-			border-radius: 0.75;
+			border-radius: 0.75rem;
 			border: 0;
 			position: absolute;
 			z-index: 5;
-
 			font-size: 0;
-
-			transition: filter  0.2s;
+			transition: filter 0.2s;//tempo de transicao do filter (brightness)
 
 			&:first-child {
 				left: 0;
 				top: 50%;
 				background: var(--purple-500);
+				
 				transform: translate(-50%, -50%);
 			}
 			&:last-child {
 				right: 0;
 				top: 50%;
 				background: var(--green-500);
+				transform: translate(50%, -50%);
 			}
 			&:hover {
-				filter: brightness(0.8);
+				filter: brightness(0.8);//lembrando, hover para tirar o brilho do btn
+			}
+		} //fim button
+	} //fim thumnaillContainer
+
+	header {
+		padding-bottom: 1rem;
+		border-bottom: 1px sold var(--gray-100);
+
+		h1 {
+			margin-top: 2rem;
+			margin-bottom: 1.5rem;
+		}
+
+		span {
+			display: inline-block;
+			font-size: 0.875rem;
+
+			/* esse & + span = todo span que antes dele tem um span,  
+			ele pega todo o primeiro span	*/
+			& + span {
+				margin-left: 1rem;
+				padding-left: 1rem;
+				position: relative;
+
+				//ee antes dele
+				&::before {
+					//com 2 && adiciona elemento, ou seja, o ponto de separacao
+					content: "";
+					width: 4px;
+					height: 4px;
+					border-radius: 2px;
+					background-color: #ddd;
+					position: absolute;
+					left: 0;
+					top: 50%;
+					transform: translate(-50%, -50%);
+				}
 			}
 		}
 	}
-}
+	.description {
+		margin-top: 2rem;
+		line-height: 1.675rem;
+		color: var(--gray-800);
+
+		p {
+			margin: 1.5rem 0
+		}
+	}
+} //fim episode
