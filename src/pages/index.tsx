@@ -9,6 +9,7 @@ eh uma forma de manipular imagem com otimizacao */
 import Link from 'next/link'//mao na roda, para cada troca de página, com link não é precisso todo
 import { PlayerContext } from "../context/PlayerContext";
 import { useContext } from "react";
+import Head from 'next/head'; //cabeçario nextJS titulo
 //carregamento novamente
 
 
@@ -57,6 +58,9 @@ export default function Home({ lastedEpisodes, allEpisodes }: HomeProps) {
 
   return (
     <div className={styles.homePage}>
+      <Head>{/* é o titulo da pagina da aba, outra dica do next*/}
+        <title>Home | Podcastr</title>{/* pode ser por qlq tag */}
+      </Head>
       {/* aki vem 2 secoes, ultimos episodeios e todos episodeos */}
       <section className={styles.lastedEpisodes}>
         <h2>Últimos lançamentos</h2>
